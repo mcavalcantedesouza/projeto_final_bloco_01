@@ -1,6 +1,8 @@
 import readlinesync = require("readline-sync");
 
-let opcao: number;
+let opcao, id, tipo, preco: number;
+let nome, cor: string;
+let tipoProduto = ["Tinta", "Ferramenta"];
 
 export function main() {
 
@@ -27,6 +29,25 @@ export function main() {
         switch (opcao) {
             case 1:
                 console.log("Cadastrar Produto!");
+
+                nome = readlinesync.question("Digite o Nome do Produto: "); 
+
+                tipo = readlinesync.keyInSelect(tipoProduto, "", { cancel: false }) + 1;
+
+                preco = readlinesync.questionFloat("Digite o preco: ");
+
+                switch (tipo) {
+                    case 1:
+                        
+                        break;
+                    case 2:
+                        
+                        break;
+                }
+
+
+
+                console.log("Produto cadastrado com sucesso");
                 keyPress();
                 break;
             case 2:
@@ -56,7 +77,7 @@ export function main() {
                 break;
         }
     } while (opcao !== 0);
-    
+
 }    
 
 function keyPress(): void {
