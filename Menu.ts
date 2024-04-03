@@ -1,8 +1,14 @@
 import readlinesync = require("readline-sync");
+import { ProdutoController } from "./src/controller/ProdutoController";
+import { Tinta } from "./src/model/Tinta";
+import { Ferramenta } from "./src/model/Ferramenta";
 
 let opcao, id, tipo, preco: number;
-let nome, cor: string;
+let nome, cor, tipoFerramenta: string;
 let tipoProduto = ["Tinta", "Ferramenta"];
+
+const produtoController: ProdutoController = new ProdutoController();
+
 
 export function main() {
 
@@ -38,10 +44,13 @@ export function main() {
 
                 switch (tipo) {
                     case 1:
+                        cor = readlinesync.question("Digite a cor da tinta: ");
+                        produtoController.cadastrar(new Tinta(produtoController.gerarId(), nome, tipo, preco, cor));
                         
                         break;
                     case 2:
-                        
+                        tipoFerramenta = readlinesync.question("Digite o tipo de Ferramenta: ");
+                        produtoController.cadastrar(new Ferramenta(produtoController.gerarId(), nome, tipo, preco, tipoFerramenta));
                         break;
                 }
 
@@ -52,18 +61,60 @@ export function main() {
                 break;
             case 2:
                 console.log("Listar todas os Produtos!");
+
+                produtoController.listarTodas();
+
+
                 keyPress();
                 break;
             case 3:
                 console.log("Listar Produto pelo ID!");
+
+                id = readlinesync.questionInt("Digite o Id do Produto: ");
+                produtoController.procurarPorId(id);
+
                 keyPress();
                 break;
             case 4:
                 console.log("Atualizar Produto!");
+
+                id = readlinesync.questionInt("Digite o Id do Produto: ");
+                    
+                let produto = produtoController.buscarNoArray(id);
+
+                if (produto !== null){
+
+                    nome = readlinesync.question("Digite o Nome do Produto: ");
+
+                    tipo = produto.tipo;
+    
+                    preco = readlinesync.questionFloat("Digite o preco: ");
+    
+                    switch (tipo) {
+                        case 1:
+                            cor = readlinesync.question("Digite a cor da tinta: ");
+                            produtoController.atualizar(new Tinta(id,
+                                nome, tipo, preco, cor));
+                            break;
+                        case 2:
+                            tipoFerramenta = readlinesync.question("Digite o tipo de Ferramenta: ");
+                            produtoController.atualizar(new Ferramenta(id,
+                                nome, tipo, preco, tipoFerramenta));
+                            break;
+                    }
+
+                }else
+                    console.log("Produto não Encontrado!")
+
+
                 keyPress();
                 break;
             case 5:
                 console.log("Deletar Produto!");
+
+                id = readlinesync.questionInt("Digite o Id do Produto: ");
+                produtoController.deletar(id);
+
                 keyPress();
                 break;
             case 0:
